@@ -1,0 +1,18 @@
+{
+    "name": "stavarengo/language-detection-service-php-consumer-library",
+    "description": "PHP library to consume the language-detection-service API.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Stavarengo",
+            "email": "faelsta@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Sta\\LanguageDetectionServiceConsumer\\": "src/LanguageDetectionServiceConsumer/"
+        }
+    },
+    "require": {}
+}
