@@ -10,18 +10,24 @@ namespace Sta\LanguageDetectionServiceConsumer;
 class DetectLanguage
 {
     /**
-     * @var string
+     * @var string[]
      */
-    protected $apiUrl = 'http://language-detection-serv-16d136bb-1.ac1f2917.cont.dockerapp.io:32783';
+    protected $apiUrl = [
+        'http://language-detection-serv-16d136bb-1.696dbbfc.cont.dockerapp.io:32785',
+        'http://language-detection-serv-16d136bb-2.6347dd67.cont.dockerapp.io:32786',
+    ];
 
     /**
      * DetectLanguage constructor.
      *
-     * @param $apiUrl
+     * @param string [] $apiUrl
      */
-    public function __construct($apiUrl = null)
+    public function __construct(array $apiUrl = [])
     {
         if ($apiUrl) {
+            if (!is_array($apiUrl)) {
+                $apiUrl = [$apiUrl];
+            }
             $this->setApiUrl($apiUrl);
         }
     }
@@ -77,15 +83,17 @@ class DetectLanguage
      */
     public function getApiUrl($endPoint)
     {
-        return trim($this->apiUrl, '/') . '/' . ltrim($endPoint, '/');
+        $apiUrl = $this->apiUrl[mt_rand(0, count($this->apiUrl) - 1)];
+
+        return trim($apiUrl, '/') . '/' . ltrim($endPoint, '/');
     }
 
     /**
-     * @param string $apiUrl
+     * @param string[] $apiUrl
      *
      * @return $this
      */
-    public function setApiUrl($apiUrl)
+    public function setApiUrl(array $apiUrl)
     {
         $this->apiUrl = $apiUrl;
 
@@ -177,8 +185,8 @@ class DetectLanguage
      *
      * @return \Sta\LanguageDetectionServiceConsumer\DetectionResult
      */
-    private function convertApiDetectResponseItem(\stdClass $responseItem
-    ): \Sta\LanguageDetectionServiceConsumer\DetectionResult {
+    private function convertApiDetectResponseItem(\stdClass $responseItem)
+    {
         $item = new DetectionResult();
         $item->setConfidence(isset($responseItem->confidence) ? $responseItem->confidence : false);
         $item->setProbability(isset($responseItem->probability) ? $responseItem->probability : 0);
